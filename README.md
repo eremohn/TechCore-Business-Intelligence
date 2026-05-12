@@ -25,6 +25,17 @@ Este README documenta cada paso realizado, las decisiones tomadas y los criterio
 
 A continuación se detalla paso a paso el proceso de limpieza aplicado en Power Query.
 
+### 0. Configuración Regional (previo a la importación)
+
+Antes de importar el archivo CSV, se configuró Power BI Desktop con la regionalización **Inglés (Estados Unidos)** para interpretar correctamente:
+- Los separadores decimales con **punto (.)** en lugar de coma (,)
+- Las fechas en formato compatible con el origen de datos
+
+**Ruta:** `Archivo` → `Opciones y configuración` → `Opciones` → `Configuración regional` → `Inglés (Estados Unidos)`
+
+Esta configuración evita errores de multiplicación por 10 en valores numéricos y problemas de interpretación de fechas.
+
+
 ### 1. Carga de datos
 
 - **Origen:** archivo `ventas.csv`
