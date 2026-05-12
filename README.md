@@ -1,4 +1,4 @@
-# 🧹 TechCore - Limpieza y Preparación de Datos de Facturación
+# TechCore - Inteligencia de Negocio para Ventas Tecnológicas
 
 ## 📌 Introducción
 
@@ -108,7 +108,7 @@ Se corrigieron errores tipográficos en las columnas `MarcaProducto1`, `MarcaPro
 
 
 
-´´´
+```bash
 TechCore-Sales-Analytics/
 │
 ├── data/
@@ -122,7 +122,7 @@ TechCore-Sales-Analytics/
 └── CHANGELOG.md # Registro de cambios futuros (opcional)
 
 
-´´´
+```
 
 
 ---
