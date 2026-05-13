@@ -114,6 +114,48 @@ Se corrigieron errores tipográficos en las columnas `MarcaProducto1`, `MarcaPro
 | IDs, nombres, textos categóricos | `Text` |
 
 ---
+### 6. Creación de columnas derivadas para análisis
+
+Con el objetivo de enriquecer el análisis y facilitar segmentaciones futuras, se crearon las siguientes columnas a partir de las existentes:
+
+#### Columnas temporales (desde `FechaVenta`)
+
+| Columna creada | Fórmula en Power Query | Descripción |
+|----------------|------------------------|-------------|
+| `Año` | `Date.Year([FechaVenta])` | Extrae el año de la venta |
+| `Mes` | `Date.Month([FechaVenta])` | Extrae el número del mes (1 al 12) |
+| `AñoMes` | `[Año] * 100 + [Mes]` | Clave numérica para orden cronológico (ej: 202512) |
+
+#### Segmentación de clientes (desde `edadcliente`)
+
+| Columna creada | Fórmula | Descripción |
+|----------------|---------|-------------|
+| `RangoEdad` | `if [Edad_cliente] < 18 then "Menor de 18" else if [Edad_cliente] < 25 then "18-24" else if [Edad_cliente] < 35 then "25-34" else if [Edad_cliente] < 50 then "35-49" else "50+"` | Agrupa clientes por rangos etarios para análisis demográfico |
+
+#### Comportamiento de compra (desde `HoraVenta`)
+
+| Columna creada | Fórmula | Descripción |
+|----------------|---------|-------------|
+| `FranjaHoraria` | `let hora = Time.Hour([HoraVenta]) in if hora < 6 then "Madrugada (0-6)" else if hora < 12 then "Mañana (6-12)" else if hora < 18 then "Tarde (12-18)" else if hora < 22 then "Noche (18-22)" else "Noche avanzada (22-24)"` | Clasifica la venta según la hora del día para identificar hábitos de consumo |
+
+#### Métricas de la factura
+
+| Columna creada | Fórmula | Descripción |
+|----------------|---------|-------------|
+| `TotalProductos` | `[Cantidad_Producto1] + [Cantidad_Producto2] + [Cantidad_Producto3]` | Número total de unidades vendidas en la factura |
+| `TieneDescuento` | `[Descuento_Venta] > 0` | Booleano que indica si la venta tuvo algún descuento aplicado |
+
+#### Ejemplo visual del resultado
+
+| FechaVenta | HoraVenta | edadcliente | TotalVenta | Año | Mes | RangoEdad | FranjaHoraria | TotalProductos | TieneDescuento |
+|------------|-----------|-------------|------------|-----|-----|-----------|---------------|----------------|----------------|
+| 2022-10-02 | 11:56:06 | 36 | 12.920.000 | 2022 | 10 | 35-49 | Mañana (6-12) | 3 | true |
+| 2022-06-04 | 07:00:48 | 43 | 23.940.000 | 2022 | 6 | 35-49 | Mañana (6-12) | 5 | true |
+| 2019-01-14 | 12:27:53 | 35 | 4.800.000 | 2019 | 1 | 35-49 | Tarde (12-18) | 1 | false |
+
+> **Nota:** La columna `TotalProductos` suma las cantidades de los tres productos posibles por factura. El valor máximo posible es la suma de `Cantidad_Producto1`, `Cantidad_Producto2` y `Cantidad_Producto3`.
+
+---
 
 ## 📁 Estructura del Proyecto
 
