@@ -169,14 +169,21 @@ Con el objetivo de enriquecer el análisis y facilitar segmentaciones futuras, s
 TechCore-Business-Intelligence/
 │
 ├── data/
-│ └── ventas.csv # Archivo original de facturación
+│   ├── raw/
+│   │   └── ventas.csv                 # Original (crudo, nunca se modifica)
+│   │
+│   └── processed/
+│       └── ventas_clean.csv           # Exportado desde Power BI (datos listos)
 │
 ├── powerbi/
-│ └── TechCore_Cleaning.pbix # Archivo de Power BI con el proceso ETL aplicado
+│   └── TechCore_Cleaning.pbix         # Archivo con todo el ETL aplicado
 │
-├── README.md # Este archivo
+├── docs/
+│   └── columnas_diccionario.md        # Diccionario de datos
 │
-└── CHANGELOG.md # Registro de cambios futuros (opcional)
+├── README.md                          # Documentación de la fase ETL
+│
+└── CHANGELOG.md                       # Registro de cambios
 
 
 ```
