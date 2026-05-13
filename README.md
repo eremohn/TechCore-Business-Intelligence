@@ -42,14 +42,37 @@ Esta configuración evita errores de multiplicación por 10 en valores numérico
 - **Formato:** CSV codificado en UTF-8
 - **Herramienta:** Power BI Desktop → Editor de Power Query
 
-### 2. Eliminación de duplicados
+### 2. Estandarización de nombres de columnas
+
+Se aplicó una convención de nomenclatura uniforme: `Pascal_Snake_Case` (primera letra mayúscula + guión bajo entre palabras).
+
+| Original | Estandarizado |
+|----------|---------------|
+| `GeneroCliente` | `Genero_Cliente` |
+| `edadcliente` | `Edad_cliente` |
+| `EmailCliente` | `Email_Cliente` |
+| `TelefonoCliente` | `Telefono_Cliente` |
+| `MetodoPago` | `Metodo_Pago` |
+| `NombreProducto1` | `Nombre_Producto1` |
+| `MarcaProducto1` | `Marca_Producto1` |
+| `PrecioUnitarioProducto1` | `Precio_Unitario_Producto1` |
+| `SubtotalProducto1` | `Subtotal_Producto1` |
+| (patrón similar para Producto2 y Producto3) | ... |
+| `DescuentoVenta` | `Descuento_Venta` |
+| `TotalVenta` | `Total_Venta` |
+
+**Nota:** `VentaID` fue eliminada posteriormente por no tener valor analítico.
+
+
+
+### 3. Eliminación de duplicados
 
 Se eliminaron registros de facturas **exactamente iguales en todas sus columnas**.
 
 - **Método:** selección de todas las columnas → `Inicio` → `Quitar filas` → `Quitar duplicados`
 - **Justificación:** evitar que una misma transacción aparezca múltiples veces en los resúmenes y cálculos.
 
-### 3. Manejo de valores nulos y vacíos
+### 4. Manejo de valores nulos y vacíos
 
 | Tipo de columna | Situación | Valor imputado |
 |----------------|-----------|----------------|
@@ -57,11 +80,11 @@ Se eliminaron registros de facturas **exactamente iguales en todas sus columnas*
 | Numérica | null | `0` |
 | NombreProducto2 / NombreProducto3 | Vacío con subtotal = 0 | `"No aplica"` |
 
-> **Nota:** En las columnas `NombreProducto2` y `NombreProducto3` se utilizó `"No aplica"` para distinguir cuando el cliente **no llevó ese producto** (subtotal = 0) de un caso donde sí llevó un producto pero faltó el nombre (subtotal > 0 con nombre vacío).
+> **Nota:** En las columnas `Nombre_Producto2` y `Nombre_Producto3` se utilizó `"No aplica"` para distinguir cuando el cliente **no llevó ese producto** (subtotal = 0) de un caso donde sí llevó un producto pero faltó el nombre (subtotal > 0 con nombre vacío).
 
-### 4. Normalización de columnas categóricas
+### 5. Normalización de columnas categóricas
 
-#### 4.1 SucursalNombre
+#### 5.1 SucursalNombre
 
 Se unificaron variaciones de escritura (mayúsculas, minúsculas, tildes, espacios, ausencia de `#`) bajo un nombre estándar.
 
@@ -74,7 +97,7 @@ Se unificaron variaciones de escritura (mayúsculas, minúsculas, tildes, espaci
 | `Techcore bogotá #2`, `TechCore bogota#2`, `Techcore bogotá#2` | `TechCore Bogotá #2` |
 | `Techcore bogotá #1`, `TechCore bogota#1`, `Techcore bogotá#1` | `TechCore Bogotá #1` |
 
-#### 4.2 CiudadSucursal
+#### 5.2 CiudadSucursal
 
 | Original detectado | Estandarizado |
 |--------------------|----------------|
@@ -84,12 +107,12 @@ Se unificaron variaciones de escritura (mayúsculas, minúsculas, tildes, espaci
 | `Pereíra`, `Pereira`, `pereíra` | `Pereira` |
 
 **Corrección de valores faltantes:**  
-Los valores nulos o "No especificado" en `CiudadSucursal` se imputaron automáticamente extrayendo la ciudad desde `SucursalNombre` mediante la función `Text.BetweenDelimiters`. Esto garantiza que toda factura tenga una ciudad válida y consistente con la sucursal registrada.
+Los valores nulos o "No especificado" en `Ciudad_Sucursal` se imputaron automáticamente extrayendo la ciudad desde `Sucursal_Nombre` mediante la función `Text.BetweenDelimiters`. Esto garantiza que toda factura tenga una ciudad válida y consistente con la sucursal registrada.
 
 
-#### 4.3 Marcas de productos
+#### 5.3 Marcas de productos
 
-Se corrigieron errores tipográficos en las columnas `MarcaProducto1`, `MarcaProducto2`, `MarcaProducto3`.
+Se corrigieron errores tipográficos en las columnas `Marca_Producto1`, `Marca_Producto2`, `Marca_Producto3`.
 
 | Original | Corregido |
 |----------|-----------|
@@ -107,7 +130,7 @@ Se corrigieron errores tipográficos en las columnas `MarcaProducto1`, `MarcaPro
 | `Samsng` | `Samsung` |
 | `Razón` | `Razer` |
 
-### 5. Tipos de datos aplicados
+### 6. Tipos de datos aplicados
 
 | Tipo de columna | Formato asignado |
 |----------------|------------------|
@@ -118,7 +141,7 @@ Se corrigieron errores tipográficos en las columnas `MarcaProducto1`, `MarcaPro
 | IDs, nombres, textos categóricos | `Text` |
 
 ---
-### 6. Creación de columnas derivadas para análisis
+### 7. Creación de columnas derivadas para análisis
 
 Con el objetivo de enriquecer el análisis y facilitar segmentaciones futuras, se crearon las siguientes columnas a partir de las existentes:
 
