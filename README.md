@@ -162,7 +162,7 @@ Con el objetivo de enriquecer el análisis y facilitar segmentaciones futuras, s
 
 
 ```bash
-TechCore-Sales-Analytics/
+TechCore-Business-Intelligence/
 │
 ├── data/
 │ └── ventas.csv # Archivo original de facturación
@@ -182,12 +182,12 @@ TechCore-Sales-Analytics/
 
 ## 🚀 Cómo Reproducir este Proceso
 
-1. Clona este repositorio o descarga el archivo `.pbix`.
+1. Clona este repositorio:
+   ```bash
+   git clone https://github.com/eremohn/TechCore-Business-Intelligence.git
 2. Abre **Power BI Desktop**.
-3. Carga el archivo `ventas.csv` desde la carpeta `data/`.
-4. Abre el **Editor de Power Query** (`Inicio` → `Transformar datos`).
-5. Revisa los **pasos aplicados** en cada consulta. Cada transformación documentada en este README está implementada paso a paso.
-6. Refresca la vista y verifica los datos limpios.
+3. Abre el archivo powerbi/TechCore_Cleaning.pbix.
+
 
 ---
 
