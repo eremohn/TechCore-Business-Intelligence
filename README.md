@@ -1,5 +1,11 @@
 # TechCore - Inteligencia de Negocio para Ventas Tecnológicas
 
+```markdown
+![Estado](https://img.shields.io/badge/Estado-ETL%20Completado-brightgreen)
+![Power BI](https://img.shields.io/badge/Power%20BI-ETL%20Listo-yellow)
+```
+
+
 ## 📌 Introducción
 
 TechCore es una cadena minorista especializada en la venta de computadores y accesorios tecnológicos. Este proyecto forma parte del proceso de análisis de datos de la compañía y tiene como objetivo principal **transformar una base de datos cruda de facturación en un conjunto de datos limpio, estructurado y listo para su uso en Power BI**.
