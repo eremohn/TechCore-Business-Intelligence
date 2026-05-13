@@ -83,6 +83,10 @@ Se unificaron variaciones de escritura (mayúsculas, minúsculas, tildes, espaci
 | `Medellín`, `medellin`, `Medellín` | `Medellín` |
 | `Pereíra`, `Pereira`, `pereíra` | `Pereira` |
 
+**Corrección de valores faltantes:**  
+Los valores nulos o "No especificado" en `CiudadSucursal` se imputaron automáticamente extrayendo la ciudad desde `SucursalNombre` mediante la función `Text.BetweenDelimiters`. Esto garantiza que toda factura tenga una ciudad válida y consistente con la sucursal registrada.
+
+
 #### 4.3 Marcas de productos
 
 Se corrigieron errores tipográficos en las columnas `MarcaProducto1`, `MarcaProducto2`, `MarcaProducto3`.
