@@ -247,8 +247,10 @@ TechCore-Business-Intelligence/
 ## 🚀 Cómo Reproducir este Proceso
 
 1. Clona este repositorio:
-   ```bash
+
+```bash
 git clone https://github.com/eremohn/TechCore-Business-Intelligence.git
+```
 
    
 
