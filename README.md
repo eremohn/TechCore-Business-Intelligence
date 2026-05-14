@@ -130,15 +130,20 @@ Se corrigieron errores tipográficos en las columnas `Marca_Producto1`, `Marca_P
 | `Samsng` | `Samsung` |
 | `Razón` | `Razer` |
 
+---
+
 ### 6. Tipos de datos aplicados
 
-| Tipo de columna | Formato asignado |
-|----------------|------------------|
-| Fechas (`FechaVenta`) | `Date` |
-| Horas (`HoraVenta`) | `Time` |
-| Precios, subtotales, totales | `Decimal Number` |
-| Cantidades | `Whole Number` |
-| IDs, nombres, textos categóricos | `Text` |
+| Columna | Formato asignado |
+|---------|------------------|
+| `FechaVenta` | `Date` |
+| `Año`, `Mes`, `AñoMes` | `Whole Number` |
+| `HoraVenta` | `Time` |
+| `FranjaHoraria`, `RangoEdad` | `Text` |
+| `Total_Venta`, `Subtotal_*`, `Precio_Unitario_*` | `Decimal Number` |
+| `Cantidad_*`, `TotalProductos` | `Whole Number` |
+| `TieneDescuento` | `Boolean` |
+| Resto de columnas de texto | `Text` |
 
 ---
 ### 7. Creación de columnas derivadas para análisis
@@ -181,6 +186,31 @@ Con el objetivo de enriquecer el análisis y facilitar segmentaciones futuras, s
 | 2019-01-14 | 12:27:53 | 35 | 4.800.000 | 2019 | 1 | 35-49 | Tarde (12-18) | 1 | false |
 
 > **Nota:** La columna `TotalProductos` suma las cantidades de los tres productos posibles por factura. El valor máximo posible es la suma de `Cantidad_Producto1`, `Cantidad_Producto2` y `Cantidad_Producto3`.
+---
+
+### 8. Eliminación de columnas sin valor analítico
+
+Se eliminó la columna `VentaID` por las siguientes razones:
+
+- **No tiene orden lógico:** Al ordenar por fecha ascendente, los IDs aparecen desordenados
+- **No es secuencial:** Los números no siguen una progresión temporal asociada a las transacciones
+- **No aporta al análisis:** No permite agrupar, ordenar ni correlacionar eventos de venta
+
+La eliminación de esta columna no afecta la integridad de los datos, ya que cada transacción queda identificada por la combinación de `FechaVenta`, `HoraVenta`, `Sucursal_Nombre` y `Total_Venta`.
+
+---
+
+### 9. Exportación del dataset limpio
+
+Una vez finalizado todo el proceso de limpieza, normalización y creación de columnas derivadas, se exportaron los datos a un archivo CSV.
+
+**Método utilizado:**
+1. En Power BI Desktop, se agregó un visual de **Tabla** con todas las columnas
+2. Se exportaron los datos mediante `...` → `Exportar datos`
+3. Formato: `.csv` / Tipo: `Datos subyacentes`
+4. El archivo se guardó como `ventas_clean.csv` en `data/processed/`
+
+**Archivo generado:** `data/processed/ventas_clean.csv`
 
 ---
 
@@ -218,12 +248,15 @@ TechCore-Business-Intelligence/
 
 1. Clona este repositorio:
    ```bash
-   git clone https://github.com/eremohn/TechCore-Business-Intelligence.git
+git clone https://github.com/eremohn/TechCore-Business-Intelligence.git
+
+   
+
 2. Abre **Power BI Desktop**.
 3. Abre el archivo powerbi/TechCore_Cleaning.pbix.
 
 
----
+
 
 ## 🔮 Próximos Pasos (Futuras Etapas)
 
