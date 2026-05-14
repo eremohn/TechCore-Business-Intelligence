@@ -137,13 +137,32 @@ Se corrigieron errores tipográficos en las columnas `Marca_Producto1`, `Marca_P
 | Columna | Formato asignado |
 |---------|------------------|
 | `FechaVenta` | `Date` |
-| `Año`, `Mes`, `AñoMes` | `Whole Number` |
+| `Año` | `Whole Number` |
+| `Mes` | `Whole Number` |
+| `AñoMes` | `Whole Number` |
 | `HoraVenta` | `Time` |
-| `FranjaHoraria`, `RangoEdad` | `Text` |
-| `Total_Venta`, `Subtotal_*`, `Precio_Unitario_*` | `Decimal Number` |
-| `Cantidad_*`, `TotalProductos` | `Whole Number` |
+| `FranjaHoraria` | `Text` |
+| `Ciudad_Sucursal` | `Text` |
+| `Sucursal_Nombre` | `Text` |
+| `Vendedor_Nombre` | `Text` |
+| `Cliente_Nombre` | `Text` |
+| `Genero_Cliente` | `Text` |
+| `Edad_cliente` | `Whole Number` |
+| `RangoEdad` | `Text` |
+| `Email_Cliente` | `Text` |
+| `Telefono_Cliente` | `Text` |
+| `Direccion_Cliente` | `Text` |
+| `Metodo_Pago` | `Text` |
+| `Nombre_Producto1` | `Text` |
+| `Marca_Producto1` | `Text` |
+| `Cantidad_Producto1` | `Whole Number` |
+| `Precio_Unitario_Producto1` | `Decimal Number` |
+| `Subtotal_Producto1` | `Decimal Number` |
+| (patrón similar para Producto2 y Producto3) | ... |
+| `Descuento_Venta` | `Decimal Number` |
 | `TieneDescuento` | `Boolean` |
-| Resto de columnas de texto | `Text` |
+| `Total_Venta` | `Decimal Number` |
+| `TotalProductos` | `Whole Number` |
 
 ---
 ### 7. Creación de columnas derivadas para análisis
