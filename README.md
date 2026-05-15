@@ -233,29 +233,164 @@ Una vez finalizado todo el proceso de limpieza, normalización y creación de co
 
 ---
 
+---
+
+## 🏗️ Modelo Relacional (Avance 2)
+
+Una vez limpios los datos, se procedió a diseñar e implementar un **modelo relacional** en Python para normalizar la información y prepararla para el análisis en Power BI.
+
+### 10. Entidades identificadas
+
+A partir del dataset limpio `ventas_clean.csv`, se identificaron las siguientes entidades:
+
+| Entidad | Descripción | Registros únicos |
+|---------|-------------|------------------|
+| Ciudades | Ciudades donde operan las sucursales | 4 |
+| Sucursales | Puntos de venta de TechCore | 6 |
+| Vendedores | Vendedores que atendieron transacciones | 30 |
+| Clientes | Clientes que realizaron compras | 17,453 |
+| Productos | Catálogo de productos (41 modelos únicos) | 41 |
+| Facturas | Cabecera de cada transacción | 30,013 |
+| DetalleFacturas | Líneas de detalle por producto | 90,000 |
+
+### 11. Estructura del modelo relacional
+
+Se construyeron **7 tablas normalizadas** con las siguientes claves:
+
+```sql
+-- Tablas dimensionales
+Ciudades      (CiudadID PK, NombreCiudad)
+Sucursales    (SucursalID PK, NombreSucursal, CiudadID FK)
+Vendedores    (VendedorID PK, NombreVendedor)
+Clientes      (ClienteID PK, NombreCliente, Genero, Edad, RangoEdad, Email, Telefono, Direccion)
+Productos     (ProductoID PK, NombreProducto, Marca, PrecioUnitario)
+
+-- Tablas de hechos
+Facturas      (FacturaID PK, Fecha, Hora, SucursalID FK, ClienteID FK, VendedorID FK, TotalVenta, Descuento, TieneDescuento)
+DetalleFacturas (DetalleID PK, FacturaID FK, ProductoID FK, Cantidad, Subtotal)
+
+```
+
+### 12. Validaciones de integridad referencial
+
+Se verificaron las siguientes relaciones sin encontrar registros huérfanos:
+
+| Validación | Resultado |
+|------------|-----------|
+| FacturaID en DetalleFacturas existe en Facturas | ✅ OK |
+| ProductoID en DetalleFacturas existe en Productos | ✅ OK |
+| SucursalID en Facturas existe en Sucursales | ✅ OK |
+| ClienteID en Facturas existe en Clientes | ✅ OK |
+| VendedorID en Facturas existe en Vendedores | ✅ OK |
+| CiudadID en Sucursales existe en Ciudades | ✅ OK |
+
+### 13. Reportes exploratorios generados
+
+Para validar la correcta estructuración del modelo, se generaron los siguientes reportes:
+
+#### Total de ventas por marca
+
+| Marca | Total Ventas |
+|-------|--------------|
+| Lenovo | $117,879,200,000 |
+| HP | $96,786,700,000 |
+| Dell | $86,722,000,000 |
+| Apple | $78,016,200,000 |
+| Asus | $33,179,600,000 |
+
+#### Top 5 productos más vendidos
+
+| Producto | Marca | Unidades |
+|----------|-------|----------|
+| HP Spectre x360 | HP | 7,726 |
+| Lenovo Legion 5 Pro | Lenovo | 5,861 |
+| Lenovo ThinkPad X1 Carbon | Lenovo | 5,814 |
+| Lenovo Yoga 7i | Lenovo | 5,052 |
+| HP Omen 16 | HP | 5,011 |
+
+#### Ventas por sucursal
+
+| Sucursal | Total Ventas |
+|----------|--------------|
+| TechCore Medellín #1 | $112,867,390,000 |
+| TechCore Medellín #2 | $91,074,355,000 |
+| TechCore Bogotá #2 | $70,116,210,000 |
+| TechCore Bogotá #1 | $69,520,080,000 |
+| TechCore Pereira | $56,652,400,000 |
+| TechCore Cali | $56,416,015,000 |
+
+#### Ventas por método de pago
+
+| Método de Pago | Total Ventas |
+|----------------|--------------|
+| Tarjeta Crédito | $182,549,370,000 |
+| Tarjeta Débito | $92,694,095,000 |
+| Transferencia | $69,096,910,000 |
+| Billetera Digital | $45,011,815,000 |
+| Efectivo | $44,889,590,000 |
+| No especificado | $22,249,890,000 |
+
+### 14. Métricas de negocio calculadas
+
+| Métrica | Valor |
+|---------|-------|
+| Total de ventas | $456,646,450,000 |
+| Ticket promedio | $15,214,955 |
+| Productos promedio por factura | 3.00 |
+| Ventas con descuento | 0% |
+
+### 15. Archivos generados
+
+| Archivo | Ubicación | Descripción |
+|---------|-----------|-------------|
+| `Avance_2_Modelo_Relacional.ipynb` | `notebooks/` | Notebook con todo el proceso de modelado |
+| `modeloVentas.xlsx` | `output/` | Excel con 7 tablas relacionales para Power BI |
+
+### 16. Diagrama Entidad-Relación
+
+-- falta diagrama entidad relacion --
+
+**Cardinalidades:**
+- Una **Ciudad** puede tener muchas **Sucursales** (1:N)
+- Una **Sucursal** puede tener muchas **Facturas** (1:N)
+- Un **Cliente** puede tener muchas **Facturas** (1:N)
+- Un **Vendedor** puede tener muchas **Facturas** (1:N)
+- Una **Factura** puede tener múltiples **DetalleFacturas** (1:N)
+- Un **Producto** puede estar en múltiples **DetalleFacturas** (1:N)
+
+---
+
 ## 📁 Estructura del Proyecto
 
 
 
 ```bash
+
 TechCore-Business-Intelligence/
 │
 ├── data/
 │   ├── raw/
-│   │   └── ventas.csv                 # Original (crudo, nunca se modifica)
-│   │
+│   │   └── ventas.csv
 │   └── processed/
-│       └── ventas_clean.csv           # Exportado desde Power BI (datos listos)
+│       └── ventas_clean.csv
 │
 ├── powerbi/
-│   └── TechCore_Cleaning.pbix         # Archivo con todo el ETL aplicado
+│   └── TechCore_Cleaning.pbix
+│
+├── notebooks/
+│   └── Avance_2_Modelo_Relacional.ipynb   ← NUEVO
+│
+├── output/
+│   └── modeloVentas.xlsx                  ← NUEVO
 │
 ├── docs/
-│   └── columnas_diccionario.md        # Diccionario de datos
+│   └── columnas_diccionario.md
 │
-├── README.md                          # Documentación de la fase ETL
+├── README.md
 │
-└── CHANGELOG.md                       # Registro de cambios
+└── CHANGELOG.md
+
+
 
 
 ```
