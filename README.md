@@ -42,6 +42,8 @@ Esta configuración evita errores de multiplicación por 10 en valores numérico
 - **Formato:** CSV codificado en UTF-8
 - **Herramienta:** Power BI Desktop → Editor de Power Query
 
+---
+
 ### 2. Estandarización de nombres de columnas
 
 Se aplicó una convención de nomenclatura uniforme: `Pascal_Snake_Case` (primera letra mayúscula + guión bajo entre palabras).
@@ -63,7 +65,7 @@ Se aplicó una convención de nomenclatura uniforme: `Pascal_Snake_Case` (primer
 
 **Nota:** `VentaID` fue eliminada posteriormente por no tener valor analítico.
 
-
+---
 
 ### 3. Eliminación de duplicados
 
@@ -71,6 +73,8 @@ Se eliminaron registros de facturas **exactamente iguales en todas sus columnas*
 
 - **Método:** selección de todas las columnas → `Inicio` → `Quitar filas` → `Quitar duplicados`
 - **Justificación:** evitar que una misma transacción aparezca múltiples veces en los resúmenes y cálculos.
+
+---
 
 ### 4. Manejo de valores nulos y vacíos
 
@@ -81,6 +85,8 @@ Se eliminaron registros de facturas **exactamente iguales en todas sus columnas*
 | NombreProducto2 / NombreProducto3 | Vacío con subtotal = 0 | `"No aplica"` |
 
 > **Nota:** En las columnas `Nombre_Producto2` y `Nombre_Producto3` se utilizó `"No aplica"` para distinguir cuando el cliente **no llevó ese producto** (subtotal = 0) de un caso donde sí llevó un producto pero faltó el nombre (subtotal > 0 con nombre vacío).
+
+---
 
 ### 5. Normalización de columnas categóricas
 
@@ -231,7 +237,7 @@ Una vez finalizado todo el proceso de limpieza, normalización y creación de co
 
 **Archivo generado:** `data/processed/ventas_clean.csv`
 
----
+
 
 ---
 
@@ -271,6 +277,7 @@ DetalleFacturas (DetalleID PK, FacturaID FK, ProductoID FK, Cantidad, Subtotal)
 
 ```
 
+---
 ### 12. Validaciones de integridad referencial
 
 Se verificaron las siguientes relaciones sin encontrar registros huérfanos:
@@ -283,6 +290,8 @@ Se verificaron las siguientes relaciones sin encontrar registros huérfanos:
 | ClienteID en Facturas existe en Clientes | ✅ OK |
 | VendedorID en Facturas existe en Vendedores | ✅ OK |
 | CiudadID en Sucursales existe en Ciudades | ✅ OK |
+
+---
 
 ### 13. Reportes exploratorios generados
 
@@ -330,6 +339,8 @@ Para validar la correcta estructuración del modelo, se generaron los siguientes
 | Efectivo | $44,889,590,000 |
 | No especificado | $22,249,890,000 |
 
+---
+
 ### 14. Métricas de negocio calculadas
 
 | Métrica | Valor |
@@ -339,12 +350,16 @@ Para validar la correcta estructuración del modelo, se generaron los siguientes
 | Productos promedio por factura | 3.00 |
 | Ventas con descuento | 0% |
 
+---
+
 ### 15. Archivos generados
 
 | Archivo | Ubicación | Descripción |
 |---------|-----------|-------------|
 | `Avance_2_Modelo_Relacional.ipynb` | `notebooks/` | Notebook con todo el proceso de modelado |
 | `modeloVentas.xlsx` | `output/` | Excel con 7 tablas relacionales para Power BI |
+
+---
 
 ### 16. Diagrama Entidad-Relación
 
