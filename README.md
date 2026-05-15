@@ -416,10 +416,10 @@ TechCore-Business-Intelligence/
 │   └── TechCore_Cleaning.pbix
 │
 ├── notebooks/
-│   └── Avance_2_Modelo_Relacional.ipynb   ← NUEVO
+│   └── Avance_2_Modelo_Relacional.ipynb   
 │
 ├── output/
-│   └── modeloVentas.xlsx                  ← NUEVO
+│   └── modeloVentas.xlsx                  
 │
 ├── docs/
 │   └── columnas_diccionario.md
