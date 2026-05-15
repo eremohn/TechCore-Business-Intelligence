@@ -243,9 +243,24 @@ Una vez finalizado todo el proceso de limpieza, normalización y creación de co
 
 ## 🏗️ Modelo Relacional (Avance 2)
 
-Una vez limpios los datos, se procedió a diseñar e implementar un **modelo relacional** en Python para normalizar la información y prepararla para el análisis en Power BI.
+Una vez limpios los datos, se procedió a diseñar e implementar un **modelo relacional** en Python utilizando un Jupyter Notebook (`Avance_2_Modelo_Relacional.ipynb`). El objetivo fue normalizar la información en tablas relacionadas, listas para su importación en Power BI.
 
-### 10. Entidades identificadas
+### 10. Proceso de modelado en Python
+
+El trabajo se realizó completamente en el notebook `Avance_2_Modelo_Relacional.ipynb`, siguiendo estos pasos:
+
+1. **Carga del dataset limpio** (`ventas_clean.csv`)
+2. **Identificación de entidades** (análisis de columnas y valores únicos)
+3. **Creación de tablas dimensionales** (Ciudades, Sucursales, Vendedores, Clientes, Productos)
+4. **Creación de tabla de hechos** (Facturas)
+5. **Desnormalización de productos** (creación de DetalleFacturas)
+6. **Validación de integridad referencial** (verificación de claves foráneas)
+7. **Generación de reportes exploratorios**
+8. **Exportación a Excel** (`modeloVentas.xlsx`)
+
+---
+
+### 11. Entidades identificadas
 
 A partir del dataset limpio `ventas_clean.csv`, se identificaron las siguientes entidades:
 
@@ -259,7 +274,26 @@ A partir del dataset limpio `ventas_clean.csv`, se identificaron las siguientes 
 | Facturas | Cabecera de cada transacción | 30,013 |
 | DetalleFacturas | Líneas de detalle por producto | 90,000 |
 
-### 11. Estructura del modelo relacional
+---
+
+### 12. Validaciones de integridad referencial
+
+Dentro del notebook, se ejecutaron las siguientes validaciones en Python para garantizar que no existieran registros huérfanos. Cada validación compara las claves foráneas de una tabla contra las claves primarias de su tabla referenciada:
+
+| # | Validación | Código Python ejecutado | Resultado |
+|---|------------|------------------------|-----------|
+| 1 | `FacturaID` en `DetalleFacturas` existe en `Facturas` | `set(detalle_facturas['FacturaID']) - set(facturas['FacturaID'])` | ✅ 0 huérfanos |
+| 2 | `ProductoID` en `DetalleFacturas` existe en `Productos` | `set(detalle_facturas['ProductoID']) - set(productos['ProductoID'])` | ✅ 0 huérfanos |
+| 3 | `SucursalID` en `Facturas` existe en `Sucursales` | `set(facturas['SucursalID']) - set(sucursales['SucursalID'])` | ✅ 0 huérfanos |
+| 4 | `ClienteID` en `Facturas` existe en `Clientes` | `set(facturas['ClienteID']) - set(clientes['ClienteID'])` | ✅ 0 huérfanos |
+| 5 | `VendedorID` en `Facturas` existe en `Vendedores` | `set(facturas['VendedorID']) - set(vendedores['VendedorID'])` | ✅ 0 huérfanos |
+| 6 | `CiudadID` en `Sucursales` existe en `Ciudades` | `set(sucursales['CiudadID']) - set(ciudades['CiudadID'])` | ✅ 0 huérfanos |
+
+**Todas las validaciones fueron exitosas**, lo que confirma la integridad referencial del modelo.
+
+---
+
+### 13. Estructura del modelo relacional
 
 Se construyeron **7 tablas normalizadas** con las siguientes claves:
 
@@ -274,28 +308,13 @@ Productos     (ProductoID PK, NombreProducto, Marca, PrecioUnitario)
 -- Tablas de hechos
 Facturas      (FacturaID PK, Fecha, Hora, SucursalID FK, ClienteID FK, VendedorID FK, TotalVenta, Descuento, TieneDescuento)
 DetalleFacturas (DetalleID PK, FacturaID FK, ProductoID FK, Cantidad, Subtotal)
-
 ```
 
 ---
-### 12. Validaciones de integridad referencial
 
-Se verificaron las siguientes relaciones sin encontrar registros huérfanos:
+### 14. Reportes exploratorios generados
 
-| Validación | Resultado |
-|------------|-----------|
-| FacturaID en DetalleFacturas existe en Facturas | ✅ OK |
-| ProductoID en DetalleFacturas existe en Productos | ✅ OK |
-| SucursalID en Facturas existe en Sucursales | ✅ OK |
-| ClienteID en Facturas existe en Clientes | ✅ OK |
-| VendedorID en Facturas existe en Vendedores | ✅ OK |
-| CiudadID en Sucursales existe en Ciudades | ✅ OK |
-
----
-
-### 13. Reportes exploratorios generados
-
-Para validar la correcta estructuración del modelo, se generaron los siguientes reportes:
+Para validar la correcta estructuración del modelo, se generaron los siguientes reportes dentro del notebook:
 
 #### Total de ventas por marca
 
@@ -307,7 +326,7 @@ Para validar la correcta estructuración del modelo, se generaron los siguientes
 | Apple | $78,016,200,000 |
 | Asus | $33,179,600,000 |
 
-#### Top 5 productos más vendidos
+#### Top 5 productos más vendidos (por unidades)
 
 | Producto | Marca | Unidades |
 |----------|-------|----------|
@@ -341,7 +360,7 @@ Para validar la correcta estructuración del modelo, se generaron los siguientes
 
 ---
 
-### 14. Métricas de negocio calculadas
+### 15. Métricas de negocio calculadas
 
 | Métrica | Valor |
 |---------|-------|
@@ -352,18 +371,21 @@ Para validar la correcta estructuración del modelo, se generaron los siguientes
 
 ---
 
-### 15. Archivos generados
+### 16. Archivos generados
 
 | Archivo | Ubicación | Descripción |
 |---------|-----------|-------------|
-| `Avance_2_Modelo_Relacional.ipynb` | `notebooks/` | Notebook con todo el proceso de modelado |
-| `modeloVentas.xlsx` | `output/` | Excel con 7 tablas relacionales para Power BI |
+| `Avance_2_Modelo_Relacional.ipynb` | `notebooks/` | Notebook con todo el proceso de modelado (pasos 1-8) |
+| `modeloVentas.xlsx` | `output/` | Excel con 7 tablas relacionales listas para Power BI |
 
 ---
 
-### 16. Diagrama Entidad-Relación
+### 17. Diagrama Entidad-Relación
 
--- falta diagrama entidad relacion --
+
+
+
+
 
 **Cardinalidades:**
 - Una **Ciudad** puede tener muchas **Sucursales** (1:N)
@@ -374,6 +396,7 @@ Para validar la correcta estructuración del modelo, se generaron los siguientes
 - Un **Producto** puede estar en múltiples **DetalleFacturas** (1:N)
 
 ---
+
 
 ## 📁 Estructura del Proyecto
 
